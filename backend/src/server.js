@@ -1,7 +1,10 @@
 import epress from "express";
+import { ENV } from "./config/env.js";
+
+
 
 const app = epress();
 
-app.listen(4000, () => {
-  console.log("Server is running on port 4000");
+app.listen(ENV.PORT, () => {
+  console.log(`Server is running on port ${ENV.PORT}`);
 });
