@@ -83,27 +83,25 @@ export const createPost = asyncHandler(async (req, res) => {
 
   let imageUrl = "";
 
-  if(imageFile) {
+  if (imageFile) {
     try {
-        // convert buffer to base64 for cloudinary upload
-        const base64Image = `data:${imageFile.mimetype};base64,${imageFile.buffer.toString("base64")}`;
+      // convert buffer to base64 for cloudinary upload
+      const base64Image = `data:${imageFile.mimetype};base64,${imageFile.buffer.toString("base64")}`;
 
-        const uploadResponse = await cloudinary.uploader.upload(base64Image, {
-            folder: "social_media_app_posts",
-            resource_type: "image",
-            transformation: [
-                { width: 800, height: 800, crop: "limit" },
-                { quality: "auto" },
-                { format: "auto" },
-            ],
-            
-        });
+      const uploadResponse = await cloudinary.uploader.upload(base64Image, {
+        folder: "social_media_app_posts",
+        resource_type: "image",
+        transformation: [
+          { width: 800, height: 800, crop: "limit" },
+          { quality: "auto" },
+          { format: "auto" },
+        ],
+      });
 
-        imageUrl = uploadResponse.secure_url;
-
+      imageUrl = uploadResponse.secure_url;
     } catch (uploadError) {
-        console.error("Error uploading image to Cloudinary:", uploadError);
-        return res.status(400).json({ message: "Failed to upload image" });
+      console.error("Error uploading image to Cloudinary:", uploadError);
+      return res.status(400).json({ message: "Failed to upload image" });
     }
   }
 
@@ -111,10 +109,66 @@ export const createPost = asyncHandler(async (req, res) => {
     user: user._id,
     content: content || "",
     image: imageUrl,
-  })
-  res.status(201).json({post});
+  });
+  res.status(201).json({ post });
 });
 
 export const likePost = asyncHandler(async (req, res) => {
- 
-}); 
+  const { userId } = getAuth(req);
+  const { postId } = req.params;
+
+  const user = await User.findByOne({ clerkId: userId });
+  const post = await Post.findById(postId);
+
+  if (!user || !post) {
+    return res.status(404).json({ message: "User or post not found" });
+  }
+
+  const hasLiked = post.likes.includes(user._id);
+
+  if (hasLiked) {
+    // unlike the post
+    await Post.findByIdAndUpdate(postId, { $pull: { likes: user._id } });
+  } else {
+    // like the post
+    await Post.findByIdAndUpdate(postId, { $push: { likes: user._id } });
+  }
+
+  //   create notification for post owner if someone liked their post
+  if (post.user.toString() !== user._id.toString() && !hasLiked) {
+    await Notification.create({
+      from: user._id,
+      to: post.user,
+      type: "like",
+      post: post._id,
+    });
+  }
+
+  res
+    .status(200)
+    .json({
+      message: hasLiked
+        ? "Post unliked successfully"
+        : "Post liked successfully",
+    });
+});
+
+export const deletePost = asyncHandler(async (req, res) => {
+    const { userId } = getAuth(req);
+    const { postId } = req.params;
+
+    const user = await User.findByOne({ clerkId: userId });
+    const post = await Post.findById(postId);
+
+    if (!user || !post) {
+      return res.status(404).json({ message: "User or post not found" });
+    }
+
+    // deleting the comment
+    await Comment.deleteMany({ post: post._id });
+
+    // deleting the post
+    await Post.findByIdAndDelete(postId);
+
+    res.status(200).json({ message: "Post deleted successfully" });
+});
