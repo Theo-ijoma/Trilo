@@ -1,9 +1,9 @@
-import asynHandler from "express-async-handler";
+import asyncHandler from "express-async-handler";
 import User from "../models/User.model.js";
 import Notification from "../models/notification.model.js";
 import { clerkClient, getAuth } from "@clerk/express";
 
-export const getUserProfile = asynHandler(async (req, res) => {
+export const getUserProfile = asyncHandler(async (req, res) => {
   const { username } = req.params;
   const user = await User.findOne({ username });
 
@@ -14,7 +14,7 @@ export const getUserProfile = asynHandler(async (req, res) => {
   res.status(200).json({ user });
 });
 
-export const updateProfile = asynHandler(async (req, res) => {
+export const updateProfile = asyncHandler(async (req, res) => {
   const { userId } = getAuth(req);
 
   const user = await User.findOneandUpdate({ clerkId: userId }, req.body, {
@@ -28,7 +28,7 @@ export const updateProfile = asynHandler(async (req, res) => {
   res.status(200).json({ user });
 });
 
-export const syncUser = asynHandler(async (req, res) => {
+export const syncUser = asyncHandler(async (req, res) => {
   const { userId } = getAuth(req);
 
   //check for existing user
@@ -54,7 +54,7 @@ export const syncUser = asynHandler(async (req, res) => {
   res.status(201).json({ user, message: "User created successfully" });
 });
 
-export const getCurrentUserProfile = asynHandler(async (req, res) => {
+export const getCurrentUserProfile = asyncHandler(async (req, res) => {
   const { userId } = getAuth(req);
   const user = await User.findOne({ clerkId: userId });
 
@@ -63,7 +63,7 @@ export const getCurrentUserProfile = asynHandler(async (req, res) => {
   res.status(200).json({ user });
 });
 
-export const followUser = asynHandler(async (req, res) => {
+export const followUser = asyncHandler(async (req, res) => {
     const { userId } = getAuth(req);
     const { targetUserId } = req.params;
 
