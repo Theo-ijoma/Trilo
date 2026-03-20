@@ -92,7 +92,8 @@ Built with scalability and real-world production in mind.
 
 * Cloudinary (Image uploads)
 * Arcjet (Security & rate limiting)
-* Socket.IO (Real-time messaging)
+* Socket.IO (Real-time messaging) 
+* Sentry (Monitoring)
 
 ---
 
