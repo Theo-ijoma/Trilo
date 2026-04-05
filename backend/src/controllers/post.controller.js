@@ -3,6 +3,8 @@ import Post from "../models/post.model.js";
 import User from "../models/User.model.js";
 import { getAuth } from "@clerk/express";
 import cloudinary from "../config/cloudinary.js";
+import Notification from "../models/Notification.model.js";
+import Comment from "../models/Comment.model.js";
 
 export const getPosts = asyncHandler(async (req, res) => {
   try {
@@ -162,6 +164,10 @@ export const deletePost = asyncHandler(async (req, res) => {
 
     if (!user || !post) {
       return res.status(404).json({ message: "User or post not found" });
+    }
+
+    if(post.user.toString() !== user._id.toString()){
+      return res.status(403).json({error: "You can only delete your own posts"})
     }
 
     // deleting the comment
