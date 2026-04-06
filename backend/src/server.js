@@ -7,19 +7,25 @@ import { clerkMiddleware } from "@clerk/express";
 import userRoutes from "./routes/user.route.js";
 import postRoutes from "./routes/post.route.js";
 import commentRoute from "./routes/comment.route.js";
-
+import notificationRoute from "./routes/notification.route.js";
+import {arcjetMiddleware} from "./middleware/arcjet.middleware.js"
 // app
 const app = express();
 
 // Middleware
-app.use(clerkMiddleware());
 app.use(cors());
 app.use(express.json());
+
+app.use(clerkMiddleware());
+app.use(arcjetMiddleware);
 
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoute);
+app.use("/api/notification", notificationRoute);
+
+
 
 
 
@@ -39,10 +45,9 @@ const startServer = async () => {
     // connect the mongoDB
     await connectDB();
 
-    // start PORT
-    app.listen(ENV.PORT, () => {
-      console.log(`Server is running on port ${ENV.PORT}`);
-    });
+    if(ENV.NODE_ENV !== "production"){
+      app.listen(ENV.PORT, ()=> console.log(`Server is up and running on PORT:`, ENV.PORT));
+    }
   } catch (error) {
     console.log("Failed to start server", error.message);
     process.exit(1);
@@ -51,3 +56,7 @@ const startServer = async () => {
 
 // Startserver
 startServer();
+
+
+// export for vercel
+export default app;
