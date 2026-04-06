@@ -6,6 +6,7 @@ import cors from "cors";
 import { clerkMiddleware } from "@clerk/express";
 import userRoutes from "./routes/user.route.js";
 import postRoutes from "./routes/post.route.js";
+import commentRoute from "./routes/comment.route.js";
 
 // app
 const app = express();
@@ -18,6 +19,8 @@ app.use(express.json());
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
+app.use("/api/comments", commentRoute);
+
 
 
 // error handling middleware
