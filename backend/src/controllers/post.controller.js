@@ -1,9 +1,9 @@
 import asyncHandler from "express-async-handler";
 import Post from "../models/post.model.js";
-import User from "../models/User.model.js";
+import User from "../models/user.model.js";
 import { getAuth } from "@clerk/express";
 import cloudinary from "../config/cloudinary.js";
-import Notification from "../models/Notification.model.js";
+import Notification from "../models/notification.model.js";
 import Comment from "../models/Comment.model.js";
 
 export const getPosts = asyncHandler(async (req, res) => {
@@ -178,3 +178,5 @@ export const deletePost = asyncHandler(async (req, res) => {
 
     res.status(200).json({ message: "Post deleted successfully" });
 });
+
+
