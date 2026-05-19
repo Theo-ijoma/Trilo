@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 import { useAuth } from "@clerk/expo";
 
-const API_BASE_URL = "https://trilo-mu.vercel.app/api";
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || "https://trilo-mu.vercel.app/api";
 // ! 🔥 localhost api would not work on your actual physical device
 // const API_BASE_URL = "http://localhost:5001/api";
 
