@@ -36,7 +36,7 @@ app.use((err, req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("Hello from the backend!");
+  res.send("Hello from trilo backend!");
 });
 
 // create server
