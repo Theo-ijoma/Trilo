@@ -8,7 +8,7 @@ import userRoutes from "./routes/user.route.js";
 import postRoutes from "./routes/post.route.js";
 import commentRoute from "./routes/comment.route.js";
 import notificationRoute from "./routes/notification.route.js";
-import {arcjetMiddleware} from "./middleware/arcjet.middleware.js"
+// import {arcjetMiddleware} from "./middleware/arcjet.middleware.js"
 // app
 const app = express();
 
@@ -17,7 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use(clerkMiddleware());
-app.use(arcjetMiddleware);
+// app.use(arcjetMiddleware);
 
 // Routes
 app.use("/api/users", userRoutes);
