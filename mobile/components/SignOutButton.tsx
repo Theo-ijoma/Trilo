@@ -1,11 +1,13 @@
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
-
+import Feather from '@expo/vector-icons/build/Feather'
+import { useSignOut } from '@/hooks/useSignOut'
 const SignOutButton = () => {
+   const {handleSignOut} = useSignOut()
   return (
-    <View>
-      <Text>SignOutButton</Text>
-    </View>
+    <TouchableOpacity onPress={handleSignOut}>
+      <Feather name="log-out" size={24} color={"#E0245E"}/>
+      </TouchableOpacity >
   )
 }
 

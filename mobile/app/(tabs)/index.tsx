@@ -1,21 +1,19 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import React from 'react'
-import { useSignOut } from '@/hooks/useSignOut';
-import { Feather } from '@expo/vector-icons';
-
+import SignOutButton from '@/components/SignOutButton';
+import { useUserSync } from '@/hooks/useUserSync';
 const HomeScreen = () => {
-  const {handleSignOut} = useSignOut()
+  useUserSync()
   return (
-    <SafeAreaView>
-    <TouchableOpacity onPress={handleSignOut}>
-      <Text>HomeScreen!</Text>
-     <Feather name="log-out" size={24} color={"#E0245E"}/>
 
-      
-    </TouchableOpacity >
+    <SafeAreaView>
+      <Text>HomeScreen!</Text>
+  
+    <SignOutButton />
+
     </SafeAreaView>
   )
 }
 
-export default HomeScreen
+export default HomeScreen 
