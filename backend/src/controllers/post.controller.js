@@ -78,7 +78,7 @@ export const createPost = asyncHandler(async (req, res) => {
       .json({ message: "Post content or image is required" });
   }
 
-  const user = await User.findById(userId);
+  const user = await User.findOne({ clerkId: userId });
   if (!user) {
     return res.status(404).json({ message: "User not found" });
   }
