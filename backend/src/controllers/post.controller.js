@@ -18,7 +18,7 @@ export const getPosts = asyncHandler(async (req, res) => {
           select: "username firstName lastName profilePicture",
         },
       });
-    res.status(200).json(posts);
+    res.status(200).json({posts});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -61,7 +61,7 @@ export const getUserPosts = asyncHandler(async (req, res) => {
           select: "username firstName lastName profilePicture",
         },
       });
-    res.status(200).json(posts);
+    res.status(200).json({posts});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
