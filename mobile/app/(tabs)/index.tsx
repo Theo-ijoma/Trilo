@@ -1,12 +1,24 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import {RefreshControl, View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React from "react";
+import React, { useState } from "react";
 import SignOutButton from "@/components/SignOutButton";
 import { Ionicons } from "@expo/vector-icons";
 import { useUserSync } from "@/hooks/useUserSync";
 import PostComposer from "@/components/PostComposer";
+import PostList from "@/components/PostList";
+import { usePosts } from "@/hooks/usePosts";
 
 const HomeScreen = () => {
+
+  const [isRefetching, setIsRefetching] = useState(false);
+  const { refetch: refetchPosts } = usePosts();
+
+  const handlePullToRefresh = async () => {
+    setIsRefetching(true);
+
+    await refetchPosts();
+    setIsRefetching(false);
+  };
   useUserSync();
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -20,8 +32,16 @@ const HomeScreen = () => {
         className="flex-1"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 80 }}
+          refreshControl={
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={handlePullToRefresh}
+            tintColor={"#1DA1F2"}
+          />
+        }
       >
         <PostComposer />
+        <PostList/>
       </ScrollView>
     </SafeAreaView>
   );
