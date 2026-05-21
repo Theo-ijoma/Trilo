@@ -78,7 +78,7 @@ export const createPost = asyncHandler(async (req, res) => {
       .json({ message: "Post content or image is required" });
   }
 
-  const user = await User.findById(userId);
+  const user = await User.findOne({ clerkId: userId });
   if (!user) {
     return res.status(404).json({ message: "User not found" });
   }
@@ -119,7 +119,7 @@ export const likePost = asyncHandler(async (req, res) => {
   const { userId } = getAuth(req);
   const { postId } = req.params;
 
-  const user = await User.findByOne({ clerkId: userId });
+  const user = await User.findOne({ clerkId: userId });
   const post = await Post.findById(postId);
 
   if (!user || !post) {
@@ -159,7 +159,7 @@ export const deletePost = asyncHandler(async (req, res) => {
     const { userId } = getAuth(req);
     const { postId } = req.params;
 
-    const user = await User.findByOne({ clerkId: userId });
+    const user = await User.findOne({ clerkId: userId });
     const post = await Post.findById(postId);
 
     if (!user || !post) {
