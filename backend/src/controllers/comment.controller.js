@@ -27,15 +27,15 @@ export const createComment = asyncHandler(async (req, res) =>{
     }
 
     const user = await User.findOne({ clerkId: userId})
-    const post = await Post.findOne(postId)
+    const post = await Post.findById(postId)
 
     if(!user || !post) return res.status(404).json({error: "User or post not found"});
 
-    const comment = await Comment.create({
-        user: userId,
-        post: postId,
-        content, 
-    })
+     const comment = await Comment.create({
+    user: user._id,
+    post: postId,
+    content,
+  });
     
     // link the comment to the Post 
     await Post.findByIdAndUpdate(postId, {
