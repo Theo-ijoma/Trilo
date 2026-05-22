@@ -12,7 +12,14 @@ interface PostCardProps {
   currentUser: User;
 }
 
-const PostCard = ({ currentUser, onDelete, onLike, post, isLiked, onComment }: PostCardProps) => {
+const PostCard = ({
+  currentUser,
+  onDelete,
+  onLike,
+  post,
+  isLiked,
+  onComment,
+}: PostCardProps) => {
   const isOwnPost = post.user._id === currentUser._id;
 
   const handleDelete = () => {
@@ -52,19 +59,25 @@ const PostCard = ({ currentUser, onDelete, onLike, post, isLiked, onComment }: P
           </View>
 
           {post.content && (
-            <Text className="text-gray-900 text-base leading-5 mb-3">{post.content}</Text>
+            <Text className="text-gray-900 text-base leading-5 mb-3">
+              {post.content}
+            </Text>
           )}
 
           {post.image && (
             <Image
-              source={{ uri: post.image }}
+              source={{
+                uri: `${post.image}?w=800&h=800&c=limit&q=auto&f=auto`,
+              }}
               className="w-full h-48 rounded-2xl mb-3"
               resizeMode="cover"
             />
           )}
-
           <View className="flex-row justify-between max-w-xs">
-            <TouchableOpacity className="flex-row items-center" onPress={() => onComment(post)}>
+            <TouchableOpacity
+              className="flex-row items-center"
+              onPress={() => onComment(post)}
+            >
               <Feather name="message-circle" size={18} color="#657786" />
               <Text className="text-gray-500 text-sm ml-2">
                 {formatNumber(post.comments?.length || 0)}
@@ -76,14 +89,19 @@ const PostCard = ({ currentUser, onDelete, onLike, post, isLiked, onComment }: P
               <Text className="text-gray-500 text-sm ml-2">0</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity className="flex-row items-center" onPress={() => onLike(post._id)}>
+            <TouchableOpacity
+              className="flex-row items-center"
+              onPress={() => onLike(post._id)}
+            >
               {isLiked ? (
                 <AntDesign name="heart" size={18} color="#E0245E" />
               ) : (
                 <Feather name="heart" size={18} color="#657786" />
               )}
 
-              <Text className={`text-sm ml-2 ${isLiked ? "text-red-500" : "text-gray-500"}`}>
+              <Text
+                className={`text-sm ml-2 ${isLiked ? "text-red-500" : "text-gray-500"}`}
+              >
                 {formatNumber(post.likes?.length || 0)}
               </Text>
             </TouchableOpacity>
