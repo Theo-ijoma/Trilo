@@ -23,7 +23,7 @@ app.use(clerkMiddleware());
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoute);
-app.use("/api/notification", notificationRoute);
+app.use("/api/notifications", notificationRoute);
 
 
 
