@@ -8,6 +8,7 @@ import PostComposer from "@/components/PostComposer";
 import PostList from "@/components/PostList";
 import { usePosts } from "@/hooks/usePosts";
 
+
 const HomeScreen = () => {
 
   const [isRefetching, setIsRefetching] = useState(false);
