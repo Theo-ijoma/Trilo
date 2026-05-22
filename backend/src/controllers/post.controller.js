@@ -90,15 +90,10 @@ export const createPost = asyncHandler(async (req, res) => {
       // convert buffer to base64 for cloudinary upload
       const base64Image = `data:${imageFile.mimetype};base64,${imageFile.buffer.toString("base64")}`;
 
-      const uploadResponse = await cloudinary.uploader.upload(base64Image, {
-        folder: "social_media_app_posts",
-        resource_type: "image",
-        transformation: [
-          { width: 800, height: 800, crop: "limit" },
-          { quality: "auto" },
-          { format: "auto" },
-        ],
-      });
+const uploadResponse = await cloudinary.uploader.upload(base64Image, {
+  folder: "social_media_app_posts",
+  resource_type: "image",
+});
 
       imageUrl = uploadResponse.secure_url;
     } catch (uploadError) {
